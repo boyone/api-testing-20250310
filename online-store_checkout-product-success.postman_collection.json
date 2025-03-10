@@ -1,0 +1,442 @@
+{
+	"info": {
+		"_postman_id": "cf1a151d-30a0-4096-9f96-32d284f3982f",
+		"name": "online-store_checkout-product-success",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3572919"
+	},
+	"item": [
+		{
+			"name": "search-product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"// pm.test(\"ต้องมีสินค้าที่มีชื่อ Bicycle จำนวน 29 ชิ้น\", function () {",
+							"//     var jsonData = pm.response.json();",
+							"//     pm.expect(jsonData.total).to.eql(29);",
+							"// });",
+							"",
+							"pm.test(\"ต้องมีสินค้าที่มีชื่อ \" + pm.iterationData.get(\"product_name\"), function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.products[0].product_name).to.eql(pm.iterationData.get(\"product_name\"));",
+							"});",
+							"",
+							"// pm.test(\"ต้องมีราคาสินค้าเท่ากับ $119.95 สำหรับสินค้า Balance Training Bicycle\", function () {",
+							"//     var jsonData = pm.response.json();",
+							"//     pm.expect(jsonData.products[0].product_price).to.eql(119.95);",
+							"// });",
+							"",
+							"// pm.test(\"ต้องมีราคาสินค้าเท่ากับ ฿4314.6 สำหรับสินค้า Balance Training Bicycle\", function () {",
+							"//     var jsonData = pm.response.json();",
+							"//     pm.expect(jsonData.products[0].product_price_thb).to.eql(4314.6);",
+							"// });",
+							"",
+							"// pm.test(\"ต้องมีราคาสินค้าราคาเต็มเท่ากับ ฿4314.597182 สำหรับสินค้า Balance Training Bicycle\", function () {",
+							"//     var jsonData = pm.response.json();",
+							"//     pm.expect(jsonData.products[0].product_price_full_thb).to.eql(4314.597182);",
+							"// });",
+							"",
+							"// pm.test(\"ต้องมีชื่อรูปเท่ากับ /Balance_Training_Bicycle.png สำหรับสินค้า Balance Training Bicycle\", function () {",
+							"//     var jsonData = pm.response.json();",
+							"//     pm.expect(jsonData.products[0].product_image).to.eql(\"/Balance_Training_Bicycle.png\");",
+							"// });"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/product?q={{keyword}}&offset=0&limit=20",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"product"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "{{keyword}}"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product-detail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"pm.test(\"ต้องมีชื่อสินค้าเท่ากับ \" + pm.iterationData.get(\"product_name\"), function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.product_name).to.eql(pm.iterationData.get(\"product_name\"));",
+							"});",
+							"",
+							"// pm.test(\"ต้องมีราคาสินค้าเท่ากับ $119.95\", function () {",
+							"//     var jsonData = pm.response.json();",
+							"//     pm.expect(jsonData.product_price).to.eql(119.95);",
+							"// });",
+							"",
+							"// pm.test(\"ต้องมีราคาสินค้าเท่ากับ ฿4314.6\", function () {",
+							"//     var jsonData = pm.response.json();",
+							"//     pm.expect(jsonData.product_price_thb).to.eql(4314.6);",
+							"// });",
+							"",
+							"// pm.test(\"ต้องมีราคาสินค้าราคาเต็มเท่ากับ ฿4314.597182\", function () {",
+							"//     var jsonData = pm.response.json();",
+							"//     pm.expect(jsonData.product_price_full_thb).to.eql(4314.597182);",
+							"// });",
+							"",
+							"// pm.test(\"ต้องมีชื่อรูปเท่ากับ /Balance_Training_Bicycle.png\", function () {",
+							"//     var jsonData = pm.response.json();",
+							"//     pm.expect(jsonData.product_image).to.eql(\"/Balance_Training_Bicycle.png\");",
+							"// });"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/product/{{product_id}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"product",
+						"{{product_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add-cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"pm.test(\"ต้องมีสินค้าที่ product_id เท่ากับ \" + pm.iterationData.get(\"product_id\"), function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.carts[0].product_id).to.eql(pm.iterationData.get(\"product_id\"));",
+							"});",
+							"",
+							"pm.test(\"ต้องมี quantity ที่ไม่เท่ากับ undefined\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.carts[0].quantity).to.not.undefined;",
+							"});",
+							"",
+							"pm.test(\"ต้องมี quantity เป็นประเภท Integer\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    // pm.expect(jsonData.carts[0].quantity).to.be.a('number');",
+							"    const quantity = jsonData.carts[0].quantity",
+							"    pm.expect(Number.isInteger(quantity)).to.be.true",
+							"});",
+							"",
+							"pm.test(\"ต้องมีสินค้าที่มีชื่อ \" + pm.iterationData.get(\"product_name\"), function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.carts[0].product_name).to.eql(pm.iterationData.get(\"product_name\"));",
+							"});",
+							"",
+							"// pm.test(\"ต้องมีราคาสินค้าเท่ากับ $119.95 สำหรับสินค้า Balance Training Bicycle\", function () {",
+							"//     var jsonData = pm.response.json();",
+							"//     pm.expect(jsonData.carts[0].product_price).to.eql(119.95);",
+							"// });",
+							"",
+							"// pm.test(\"ต้องมีราคาสินค้าเท่ากับ ฿4314.6 สำหรับสินค้า Balance Training Bicycle\", function () {",
+							"//     var jsonData = pm.response.json();",
+							"//     pm.expect(jsonData.carts[0].product_price_thb).to.eql(4314.6);",
+							"// });",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"product_id\": {{product_id}},\n   \"quantity\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/addCart",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"addCart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"pm.test(\"ต้องมีค่า order_id กลับมาเสมอ\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.order_id).to.not.undefined;",
+							"",
+							"    pm.collectionVariables.set(\"order_id\", jsonData.order_id);",
+							"",
+							"    console.log(\"order_id: \" + jsonData.order_id);",
+							"    console.log(\"data: \" + JSON.stringify(jsonData));",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"cart\": [\n    {\n      \"product_id\": {{product_id}},\n      \"quantity\": 1\n    }\n  ],\n  \"burn_point\": 0,\n  \"sub_total_price\": 4314.6,\n  \"discount_price\": 0,\n  \"total_price\": 4364.6,\n  \"shipping_method_id\": 1,\n  \"shipping_address\": \"189/413 หมู่ 2\",\n  \"shipping_sub_district\": \"แพรกษาใหม่\",\n  \"shipping_district\": \"เมืองสมุทรปราการ\",\n  \"shipping_province\": \"สมุทรปราการ\",\n  \"shipping_zip_code\": \"10280\",\n  \"recipient_first_name\": \"พงศกร\",\n  \"recipient_last_name\": \"รุ่งเรืองทรัพย์\",\n  \"recipient_phone_number\": \"090912799\",\n  \"payment_method_id\": 1,\n  \"payment_information\": {\n    \"card_name\": \"พงศกร รุ่งเรืองทรัพย์\",\n    \"card_number\": \"4719 7005 9159 0995\",\n    \"expire_date\": \"02/26\",\n    \"cvv\": \"75\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/order",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "confirm-payment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"const order_id = pm.collectionVariables.get(\"order_id\");",
+							"",
+							"pm.test(\"ต้องมี order_id เท่ากับ \" + order_id, function () {",
+							"",
+							"",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.order_id).to.eql(order_id);",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"order_id\": {{order_id}},\n  \"otp\": 124532,\n  \"ref_otp\": \"AXYZ\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/confirmPayment",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"confirmPayment"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "order_id",
+			"value": ""
+		},
+		{
+			"key": "keyword",
+			"value": "Bicycle",
+			"type": "default"
+		},
+		{
+			"key": "product_name",
+			"value": "Balance Training Bicycle",
+			"type": "string"
+		},
+		{
+			"key": "product_id",
+			"value": "1",
+			"type": "default"
+		}
+	]
+}
