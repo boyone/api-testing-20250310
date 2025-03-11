@@ -43,3 +43,5 @@
      }
    );
    ```
+
+3. สร้าง `total: 29` ใน `defaultData` และใช้ในการทดสอบที่ `search-product: Post-response`
