@@ -1,0 +1,86 @@
+{
+	"info": {
+		"_postman_id": "23a6a94a-d617-4593-ac0e-72f7a2ce214b",
+		"name": "CallUntil",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3572919"
+	},
+	"item": [
+		{
+			"name": "check-status",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let counter = pm.collectionVariables.get(\"counter\");",
+							"",
+							"if(counter === '') {",
+							"    counter = 0;",
+							"    pm.collectionVariables.set(\"counter\", counter);",
+							"} else {",
+							"    counter++;",
+							"    pm.collectionVariables.set(\"counter\", counter);",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"pm.test(\"Wait Until Status == completed\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    let counter = pm.collectionVariables.get(\"counter\");",
+							"",
+							"    if(counter < 4) {",
+							"        pm.expect(jsonData.status).to.eql(\"processing\");",
+							"        postman.setNextRequest(\"check-status\");",
+							"    } else {",
+							"        pm.expect(jsonData.status).to.eql(\"completed\");",
+							"    }",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8882/api/v1/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8882",
+					"path": [
+						"api",
+						"v1",
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "counter",
+			"value": ""
+		}
+	]
+}
