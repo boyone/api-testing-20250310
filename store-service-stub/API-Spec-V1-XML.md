@@ -242,6 +242,7 @@ status code : 200
 ## Product List: Post-request
 
 ```js
+// first draft
 pm.test('Total should be 2', function () {
   var jsonObject = xml2Json(pm.response.text());
   console.log(JSON.stringify(jsonObject));
@@ -271,4 +272,25 @@ pm.test('Product name should be Balance Training Bicycle', function () {
     }
   );
 });
+```
+
+```js
+// second draft
+var parseString = require('xml2js').parseString;
+parseString(
+  pm.response.text(),
+  { explicitArray: false, explicitRoot: false },
+  function (err, result) {
+    pm.test('Total should be 2', function () {
+      console.log(JSON.stringify(result));
+      pm.expect(result.total).to.eql('2');
+    });
+
+    pm.test('Product name should be Balance Training Bicycle', function () {
+      pm.expect(result.products.product[0].product_name).to.eql(
+        'Balance Training Bicycle'
+      );
+    });
+  }
+);
 ```
