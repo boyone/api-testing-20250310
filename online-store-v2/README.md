@@ -1,6 +1,6 @@
 # Online Store Checkout Product Success
 
-1. Collection PreScript
+1. Collection Pre-request
 
    ```js
    const data = {
@@ -28,4 +28,18 @@
    const missingKeys = keys.filter((key) => !dataKeys.includes(key));
    // missingKeys.forEach( (e) => console.log(data[e]) );
    missingKeys.forEach((k) => pm.variables.set(k, data[k]));
+   ```
+
+2. search-product: Post-response
+
+   ```js
+   pm.test(
+     'ต้องมีสินค้าที่มีชื่อ ' + pm.variables.get('product_name'),
+     function () {
+       var jsonData = pm.response.json();
+       pm.expect(jsonData.products[0].product_name).to.eql(
+         pm.variables.get('product_name')
+       );
+     }
+   );
    ```
