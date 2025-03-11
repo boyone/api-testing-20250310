@@ -314,3 +314,19 @@ parseString(
   }
 );
 ```
+
+## Submit Order: Post-request
+
+```js
+var parseString = require('xml2js').parseString;
+parseString(
+  pm.response.text(),
+  { explicitArray: false, explicitRoot: false },
+  function (err, result) {
+    pm.test('Order ID should exist', function () {
+      pm.expect(result.order_id).to.not.undefined;
+      pm.collectionVariables.set('order_id', result.order_id);
+    });
+  }
+);
+```
