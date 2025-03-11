@@ -45,3 +45,21 @@
    ```
 
 3. สร้าง `total: 29` ใน `defaultData` และใช้ในการทดสอบที่ `search-product: Post-response`
+
+    ```js
+    const data = {
+     keyword: 'Bicycle',
+     product_name: 'Balance Training Bicycle',
+     product_id: 1,
+     total: 29,
+     order: {
+        ...
+     }
+    ```
+
+    ```js
+    pm.test("ต้องมีสินค้าที่มีชื่อ Bicycle จำนวน " + pm.variables.get("total") + " ชิ้น", function () {
+        var jsonData = pm.response.json();
+        pm.expect(jsonData.total).to.eql(pm.variables.get("total"));
+    });
+    ```
