@@ -294,3 +294,23 @@ parseString(
   }
 );
 ```
+
+## Product Detail: Post-request
+
+```js
+var parseString = require('xml2js').parseString;
+parseString(
+  pm.response.text(),
+  { explicitArray: false, explicitRoot: false },
+  function (err, result) {
+    pm.test('Product price should be 119.95', function () {
+      console.log(JSON.stringify(result));
+      pm.expect(result.product_price).to.eql('119.95');
+    });
+
+    pm.test('Product name should be Balance Training Bicycle', function () {
+      pm.expect(result.product_name).to.eql('Balance Training Bicycle');
+    });
+  }
+);
+```
