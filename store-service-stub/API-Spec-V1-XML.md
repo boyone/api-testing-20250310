@@ -236,3 +236,39 @@ status code : 200
 | order_id     | string   | หมายเลขเลขของออเดอร์ |
 | shipping     | string   | ผู้ขนส่ง             |
 | tracking_id  | string   | หมายเลขการจัดส่ง     |
+
+---
+
+## Product List: Post-request
+
+```js
+pm.test('Total should be 2', function () {
+  var jsonObject = xml2Json(pm.response.text());
+  console.log(JSON.stringify(jsonObject));
+  pm.expect(jsonObject.root.total).to.eql('2');
+
+  var parseString = require('xml2js').parseString;
+  parseString(
+    pm.response.text(),
+    { explicitArray: false, explicitRoot: false },
+    function (err, result) {
+      console.log(JSON.stringify(result));
+      pm.expect(result.total).to.eql('2');
+    }
+  );
+});
+
+pm.test('Product name should be Balance Training Bicycle', function () {
+  var parseString = require('xml2js').parseString;
+  parseString(
+    pm.response.text(),
+    { explicitArray: false, explicitRoot: false },
+    function (err, result) {
+      console.log(JSON.stringify(result));
+      pm.expect(result.products.product[0].product_name).to.eql(
+        'Balance Training Bicycle'
+      );
+    }
+  );
+});
+```
