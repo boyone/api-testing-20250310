@@ -1,0 +1,324 @@
+{
+	"info": {
+		"_postman_id": "149b65d8-ef37-4a69-87b2-578249633a4e",
+		"name": "shoppping-cart xml",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3572919"
+	},
+	"item": [
+		{
+			"name": "product-list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Total product should be 2\", function () {",
+							"    var responseBody = pm.response.text();",
+							"",
+							"    const xml2js = require('xml2js');",
+							"    xml2js.parseString(pm.response.text(), {explicitArray:false}, function (err, products) {",
+							"        // console.log(JSON.stringify(products['root']))",
+							"        console.log(JSON.stringify(products.root))",
+							"        pm.expect('2').to.eql(products['root'].total);",
+							"    });",
+							"    ",
+							"});",
+							"",
+							"pm.test(\"first product should be Balance Training Bicycle\", function () {",
+							"    var responseBody = pm.response.text();",
+							"",
+							"    const xml2js = require('xml2js');",
+							"    xml2js.parseString(pm.response.text(), function (err, products) {",
+							"        console.log(JSON.stringify(products.root))",
+							"        pm.expect('Balance Training Bicycle').to.eql(products.root.products[0].product[0].product_name[0]);",
+							"    });",
+							"    ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "text/xml",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product-detail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Product name should be Balance Training Bicycle\", function () {",
+							"    const xml2js = require('xml2js');",
+							"    xml2js.parseString(pm.response.text(), function (err, product) {",
+							"        console.log(JSON.stringify(product['product']))",
+							"        pm.expect('Balance Training Bicycle').to.eql(product.product.product_name[0]);",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Product price should be 119.95\", function () {",
+							"    const xml2js = require('xml2js');",
+							"    xml2js.parseString(pm.response.text(), {explicitArray:false}, function (err, product) {",
+							"        console.log(JSON.stringify(product['product']))",
+							"        pm.expect('119.95').to.eql(product.product.product_price);",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "text/xml",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://dminer.in.th:8000/api/v1/product/2",
+					"protocol": "http",
+					"host": [
+						"dminer",
+						"in",
+						"th"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"product",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "submit-order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"OrderId is existed\", function () {",
+							"    const xml2js = require('xml2js');",
+							"    xml2js.parseString(pm.response.text(), {explicitArray:false}, function (err, root) {",
+							"        // console.log(JSON.stringify(products['root']))",
+							"        pm.expect(root.order.order_id).to.exist;",
+							"        pm.collectionVariables.set(\"order_id\", root.order.order_id);",
+							"    });",
+							"",
+							"});",
+							"",
+							"pm.test(\"Total price should be 14.95\", function () {",
+							"    const xml2js = require('xml2js');",
+							"    xml2js.parseString(pm.response.text(), {explicitArray:false}, function (err, root) {",
+							"        pm.expect('14.95').to.eql(root.order.total_price);",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"type": "default"
+					},
+					{
+						"key": "Accept",
+						"value": "text/xml",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<orders>\n\t<carts>\n\t\t<cart>\n\t\t\t<product_id>2</product_id>\n\t\t\t<quantity>1</quantity>\n\t\t</cart>\n\t</carts>\n\t<shipping_method>Kerry</shipping_method>\n\t<shipping_address>405/37 ถ.มหิดล</shipping_address>\n\t<shipping_sub_district>ท่าศาลา</shipping_sub_district>\n\t<shipping_district>เมือง</shipping_district>\n\t<shipping_province>เชียงใหม่</shipping_province>\n\t<shipping_zip_code>50000</shipping_zip_code>\n\t<recipient_name>ณัฐญา ชุติบุตร</recipient_name>\n\t<recipient_phone_number>097080929</recipient_phone_number>\n</orders>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "confirm-payment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let order_id = pm.collectionVariables.get(\"order_id\");",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"notify_message หมายเลขคำสั่งซื้อ \" + order_id, function () {",
+							"    const xml2js = require('xml2js');",
+							"    xml2js.parseString(pm.response.text(), {explicitArray:false}, function (err, root) {",
+							"        // console.log(JSON.stringify(products['root']))",
+							"        pm.expect(root.notify_message.order_id).to.not.undefined;",
+							"        pm.expect(order_id).to.equals(root.notify_message.order_id);",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"notify_message คุณสามารถติดตามสินค้าผ่านช่องทาง Kerry\", function () {",
+							"    const xml2js = require('xml2js');",
+							"    xml2js.parseString(pm.response.text(), {explicitArray:false}, function (err, root) {",
+							"        // console.log(JSON.stringify(products['root']))",
+							"        pm.expect(root.notify_message.shipping).to.not.undefined;",
+							"        pm.expect(\"Kerry\").to.equals(root.notify_message.shipping);",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "text/xml",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<confirm_payment>\n\t<order_id>{{order_id}}</order_id>\n\t<payment_type>credit</payment_type>\n\t<type>visa</type>\n\t<card_number>4719700591590995</card_number>\n\t<cvv>752</cvv>\n\t<expired_month>7</expired_month>\n\t<expired_year>20</expired_year>\n\t<card_name>Karnwat Wongudom</card_name>\n\t<total_price>14.9</total_price>\n</confirm_payment>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/confirmPayment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"confirmPayment"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "order_id",
+			"value": ""
+		},
+		{
+			"key": "order_idx",
+			"value": ""
+		}
+	]
+}

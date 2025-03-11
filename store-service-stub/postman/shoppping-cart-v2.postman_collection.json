@@ -1,0 +1,362 @@
+{
+	"info": {
+		"_postman_id": "44858abe-2e7b-44e0-87a7-1fbcca97d2e4",
+		"name": "shoppping-cart-v2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3572919"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"",
+							"",
+							"    var jsonData = pm.response.json();",
+							"",
+							"    pm.collectionVariables.set(\"token\", jsonData.token);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user\": \"john\",\n    \"password\": \"password\"\n}"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/auth/login",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product-list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Total product should be 2\", function () {",
+							"    var products = pm.response.json();",
+							"    pm.expect(2).to.eql(products.total);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v2/product",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product-detail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var product = pm.response.json();",
+							"",
+							"pm.test(\"Product name should be Balance Training Bicycle\", function () {",
+							"    pm.expect('Balance Training Bicycle').to.eql(product.product_name);",
+							"});",
+							"",
+							"pm.test(\"Product price should be 119.95\", function () {",
+							"    pm.expect(119.95).to.eql(product.product_price);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v2/product/1",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"product",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "submit-order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"OrderId is existed\", function () {",
+							"    pm.expect(jsonData.order_id).to.exist;",
+							"    pm.collectionVariables.set(\"order_id\", jsonData.order_id);",
+							"});",
+							"",
+							"pm.test(\"Total price should be 14.95\", function () {",
+							"    pm.expect(14.95).to.eql(jsonData.total_price);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"cart\":[\n\t\t{\n\t\t\t\"product_id\": 2,\n\t\t\t\"quantity\": 1\n\t\t}\n\t],\n\t\"shipping_method\": \"Kerry\",\n\t\"shipping_address\": \"405/37 ถ.มหิดล\",\n\t\"shipping_sub_district\": \"ท่าศาลา\",\n\t\"shipping_district\": \"เมือง\",\n\t\"shipping_province\": \"เชียงใหม่\",\n\t\"shipping_zip_code\": \"50000\",\n\t\"recipient_name\": \"ณัฐญา ชุติบุตร\",\n\t\"recipient_phone_number\": \"0970809292\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v2/order",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "confirm payment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let order_id = pm.collectionVariables.get(\"order_id\");",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"ตรวจสอบ payment_date ต้องเท่ากับ 1/3/2020 13:30:00\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.payment_date).to.eql('1/3/2020 13:30:00');",
+							"});",
+							"",
+							"pm.test(\"ตรวจสอบหมายเลขคำสั่งซื้อ ต้องเท่ากับ \" + order_id, function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.order_id).to.eql(order_id);",
+							"});",
+							"",
+							"pm.test(\"ตรวจสอบช่องทางติดตามสินค้า ต้องเท่ากับ Kerry\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.shipping).to.eql(\"Kerry\");",
+							"});",
+							"",
+							"pm.test(\"ต้องได้รับหมายเลขติดตามสินค้า\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.tracking_id).to.exist;",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"order_id\": {{order_id}},\n\t\"payment_type\": \"credit\",\n\t\"type\": \"visa\",\n\t\"card_number\": \"4719700591590995\",\n\t\"cvv\": \"752\",\n\t\"expired_month\": 7,\n\t\"expired_year\": 20,\n\t\"card_name\": \"Karnwat Wongudom\",\n\t\"total_price\": 14.95\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v2/confirmPayment",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"confirmPayment"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "order_id",
+			"value": ""
+		},
+		{
+			"key": "order_idx",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
