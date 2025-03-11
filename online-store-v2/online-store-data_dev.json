@@ -2,8 +2,12 @@
   {
     "keyword": "Bicycle",
     "product_name": "Balance Training Bicycle",
-    "total":29,
+    "total": 29,
     "product_id": 1,
+    "add_cart": {
+      "product_id": 1,
+      "quantity": 1
+    },
     "order": {
       "cart": [
         {
@@ -36,8 +40,12 @@
   {
     "keyword": "Dinner",
     "product_name": "43 Piece dinner Set",
-    "total":7,
+    "total": 7,
     "product_id": 2,
+    "add_cart": {
+      "product_id": 2,
+      "quantity": 1
+    },
     "order": {
       "cart": [
         {
